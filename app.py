@@ -80,10 +80,10 @@ for col in important_features:
 
 for col in feature_columns:
     if col not in user_input:
-        if df[col].dtype == object:
-            user_input[col] = df[col].mode()[0]
-        else:
+        if is_numeric_dtype(df[col]):
             user_input[col] = df[col].mean()
+        else:
+            user_input[col] = df[col].mode()[0]
 
 input_df = pd.DataFrame([user_input])[feature_columns]
 
