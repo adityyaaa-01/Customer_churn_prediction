@@ -59,14 +59,6 @@ important_features = [
 user_input = {}
 
 for col in important_features:
-    st.write(
-        col,
-        df[col].dtype,
-        df[col].min(),
-        df[col].max(),
-        df[col].mean() if is_numeric_dtype(df[col]) else "Categorical"
-    )
-
     if is_numeric_dtype(df[col]):
         user_input[col] = st.number_input(
             col,
