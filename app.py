@@ -4,6 +4,7 @@ import numpy as np
 import joblib
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.linear_model import LogisticRegression
+from pandas.api.types import is_numeric_dtype
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
@@ -58,14 +59,23 @@ important_features = [
 user_input = {}
 
 for col in important_features:
-    if df[col].dtype == object:
-        user_input[col] = st.selectbox(col, df[col].unique())
-    else:
+    st.write(
+        col,
+        df[col].dtype,
+        df[col].min(),
+        df[col].max(),
+        df[col].mean() if is_numeric_dtype(df[col]) else "Categorical"
+    )
+
+    if is_numeric_dtype(df[col]):
         user_input[col] = st.number_input(
             col,
-            min_value=float(df[col].min()),
-            max_value=float(df[col].max()),
             value=float(df[col].mean())
+        )
+    else:
+        user_input[col] = st.selectbox(
+            col,
+            df[col].dropna().unique()
         )
 
 for col in feature_columns:
